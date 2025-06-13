@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rules of the Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: linear-gradient(160deg, #004f9b, #77a2cc 60%, #edf5fd);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      color: #333;
+    }
+
+    .wave-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      background: radial-gradient(circle at 20% 40%, rgba(255,255,255,0.1), transparent 60%),
+                  radial-gradient(circle at 80% 60%, rgba(255,255,255,0.08), transparent 60%);
+      animation: moveBg 12s infinite alternate ease-in-out;
+    }
+
+    @keyframes moveBg {
+      0% { background-position: 0% 0%, 100% 100%; }
+      100% { background-position: 100% 0%, 0% 100%; }
+    }
+
+    .particles, .stars {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .particle, .star {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      animation: float 12s infinite ease-in-out;
+    }
+
+    .particle {
+      width: 8px; height: 8px;
+      animation-duration: 10s;
+    }
+
+    .star {
+      width: 4px; height: 4px;
+      background: rgba(255, 255, 255, 0.6);
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.9; transform: scale(1.3); }
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 2.5rem 1rem 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1.title {
+      font-family: 'Great Vibes', cursive;
+      font-size: 5rem;
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 3px 3px 12px rgba(0,0,0,0.4);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeSlideIn 1.2s ease-out forwards;
+    }
+
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      background-color: #ffffffdd;
+      color: #004f9b;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      background-color: #fff;
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .card {
+      display: none;
+      background: #ffffffee;
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 1.8rem;
+      max-width: 620px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      animation: slideFade 0.5s ease-out;
+    }
+
+    .card.active {
+      display: block;
+    }
+
+    @keyframes slideFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h2 {
+      color: #004f9b;
+      font-size: 1.7rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .card p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+      h1.title {
+        font-size: 3rem;
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 背景动画层 -->
+  <div class="wave-bg"></div>
+  <div class="particles"></div>
+  <div class="stars"></div>
+
+  <div class="content">
+    <h1 class="title">Rules of the Game</h1>
+
+    <div class="buttons">
+      <button class="btn" onclick="show('photo')">📸 拍照区</button>
+      <button class="btn" onclick="show('quiz')">🧠 问答区</button>
+      <button class="btn" onclick="show('decode')">🔐 挑战区</button>
+      <button class="btn" onclick="show('message')">💌 留言区</button>
+    </div>
+
+    <div id="photo" class="card active">
+      <h2>📸 青春快照馆</h2>
+      <p>
+        根据参与人数选择单人、双人、四人或五人模式，
+        挑战者从1-5中选择数字，每个数字对应一种拍照姿势。
+        挑选你喜欢的装饰品，摆好Pose，拍下属于你们的毕业定格！
+        拍好后向工作人员展示验证，与参考姿势相符，即可完成挑战~</p>
+    </div>
+
+    <div id="quiz" class="card">
+      <h2>🧠 记忆大搜索</h2>
+      <p>毕业前，一起来场记忆大考验！
+        工作人员随机向参加挑战者进行提问，问题与北语生活相关。
+        每人有两次答错机会，总正答数达到9个即为挑战成功。
+        唤醒那些沉睡的记忆，看看你还能记得多少“英高瞬间”！</p>
+    </div>
+
+    <div id="decode" class="card">
+      <h2>🔐 密语大解码</h2>
+      <p>随机抽取一道题目（有英语、西语、法语三种语种可供选择），先将其翻译成中文，然后用你的家乡方言读出来！
+        完成挑战，留下你的“多语毕业音”！</p>
+    </div>
+
+    <div id="message" class="card">
+      <h2>💌 梧桐心语录</h2>
+      <p>在毕业板前写下一句话：
+        给母校、老师、朋友，也可以是给未来的自己。
+        一句心语，一纸留念，满满不舍与祝福。
+        我们把它们收集起来，拼成青春最温柔的底色。</p>
+    </div>
+  </div>
+
+  <script>
+    function show(id) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // 生成粒子和星星
+    function createFloatingElements(className, count, sizeRange, containerSelector) {
+      const container = document.querySelector(containerSelector);
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = className;
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = Math.random() * 100 + 'vh';
+        el.style.width = el.style.height = Math.random() * sizeRange + 2 + 'px';
+        el.style.animationDuration = 6 + Math.random() * 10 + 's';
+        el.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(el);
+      }
+    }
+
+    createFloatingElements('particle', 40, 6, '.particles');
+    createFloatingElements('star', 30, 3, '.stars');
+  </script>
+
+</body>
+</html>
+
